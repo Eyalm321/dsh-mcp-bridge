@@ -1,0 +1,13 @@
+{
+  "name": "dsh-mcp-bridge",
+  "version": "0.1.0",
+  "description": "Exposes a DeepSeek Harness deployment's capabilities to any MCP client — memory, the task ledger, project-agent dispatch and the MCP estate — as declared tools rather than remembered shell commands.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "dsh-mcp-bridge": "./src/server.js" },
+  "exports": { ".": "./src/tools.js" },
+  "files": ["src", "README.md", "LICENSE"],
+  "scripts": { "test": "node --test test/*.test.js" },
+  "keywords": ["dsh", "deepseek-harness", "mcp", "claude", "bridge"],
+  "engines": { "node": ">=20" }
+}
