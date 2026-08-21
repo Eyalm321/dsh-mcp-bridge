@@ -61,3 +61,11 @@ test('the catalogue covers memory, ledger, dispatch and the MCP estate', () => {
     assert.match(names, new RegExp(probe));
   }
 });
+
+test('dsh_role is exposed, because project rules do not reach a general session', () => {
+  const t = BY_NAME.get('dsh_role');
+  assert.ok(t, 'the bridge must be able to fetch project rules');
+  assert.match(validate(t, {}), /target/);
+  assert.deepEqual(t.argv({ target: 'canora-sync' }).slice(-1), ['canora-sync']);
+  assert.match(t.description, /BEFORE editing/, 'the description must say when to call it');
+});

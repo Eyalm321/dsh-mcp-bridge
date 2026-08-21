@@ -61,6 +61,12 @@ export const TOOLS = [
     argv: (a) => [bin('dsh-tasks.py'), 'block', a.project, a.id, '--reason', a.reason],
   },
   {
+    name: 'dsh_role',
+    description: 'The operating rules for a project or repository — branch policy, toolchain facts, production access. Read this BEFORE editing anything in a repo: project rules are not loaded into a general session, and acting without them is how work lands on the wrong branch.',
+    schema: { type: 'object', properties: { target: req('Project name or repository name.') }, required: ['target'] },
+    argv: (a) => [bin('dsh-role.sh'), a.target],
+  },
+  {
     name: 'dsh_projects',
     description: 'The project registry: which agent owns which repositories. Read this before assuming where a repo belongs.',
     schema: { type: 'object', properties: {} },
