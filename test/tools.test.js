@@ -69,3 +69,27 @@ test('dsh_role is exposed, because project rules do not reach a general session'
   assert.deepEqual(t.argv({ target: 'canora-sync' }).slice(-1), ['canora-sync']);
   assert.match(t.description, /BEFORE editing/, 'the description must say when to call it');
 });
+
+test('the search tool maps to the search command with the query as its argument', () => {
+  const t = BY_NAME.get('dsh_web_search');
+  assert.ok(t, 'dsh_web_search must be declared');
+  assert.deepEqual(t.argv({ query: 'what changed in node 24' }).slice(-1), ['what changed in node 24']);
+  assert.match(t.argv({ query: 'x' })[0], /dsh-search\.py$/);
+});
+
+test('the search tool requires a query, because an empty search bills for nothing', () => {
+  const t = BY_NAME.get('dsh_web_search');
+  assert.deepEqual(t.schema.required, ['query']);
+  // validate REPORTS rather than throws — the caller turns it into a protocol error.
+  assert.match(validate(t, {}) ?? '', /missing required argument\(s\): query/);
+  assert.match(validate(t, { query: '   ' }) ?? '', /query/, 'whitespace is not a query');
+  assert.equal(validate(t, { query: 'real' }), null);
+});
+
+test('its description tells the model WHEN to reach for it, not just what it does', () => {
+  const d = BY_NAME.get('dsh_web_search').description;
+  // A tool the model never thinks to call is the same as no tool: today the chat tier only
+  // searched because a shell command happened to be documented in AGENTS.md.
+  assert.match(d, /cutoff/i);
+  assert.match(d, /price|version|release|news/i);
+});

@@ -25,6 +25,20 @@ const opt = (description) => ({ type: 'string', description });
 
 export const TOOLS = [
   {
+    name: 'dsh_web_search',
+    description:
+      'Search the web and get an answer with source URLs. Use it whenever a question turns on '
+      + 'anything after your training cutoff, anything that changes (prices, versions, releases, '
+      + 'news), or any fact you would otherwise state from memory and hope. Returns snippets, not '
+      + 'whole pages: open a URL with the agent-browser tools when the detail matters.',
+    schema: {
+      type: 'object',
+      properties: { query: req('What to find out, phrased as a question.') },
+      required: ['query'],
+    },
+    argv: (a) => [bin('dsh-search.py'), a.query],
+  },
+  {
     name: 'dsh_memory_search',
     description: 'Search the harness memory store (full-text). Use before assuming something is unknown — durable facts about the user, projects and past decisions live here.',
     schema: { type: 'object', properties: { query: req('Words to search for.'), limit: { type: 'integer', description: 'Max results (default 10).' } }, required: ['query'] },
